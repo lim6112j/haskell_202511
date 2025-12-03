@@ -4,6 +4,7 @@ import ContainerLib
 import MtlExample
 import TemplateExample
 import TextBytestring
+import LensesExample
 
 main :: IO ()
 main = do
@@ -11,3 +12,4 @@ main = do
   somefunc2
   someFunc3
   someFunc4
+  someFunc5

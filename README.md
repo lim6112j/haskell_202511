@@ -3,6 +3,35 @@
 2,text + bytestring,bytestring performance tests,Text vs String vs ByteString 변환/파싱 성능 (70배 차이 실증),https://github.com/haskell/bytestring/tree/master/tests/performance,cabal build && ./dist/build/test/test
 3,mtl + transformers,mtl ReaderT examples,ReaderT 패턴으로 환경/설정 관리 (실무 99% 적용 예제),https://github.com/haskell/mtl/tree/master/examples/reader,stack new mtl-ex . && stack run
 4,lens + generic-lens,generic-lens modern setup,Generic으로 레코드 렌즈 자동 생성 + JSON 중첩 수정 (보일러플레이트 0),https://github.com/mtamc/generic-lens-modern-setup,stack build && stack exec example
+
+# Lens Library Reference
+
+## Core Operators
+| Operator | Meaning | Example | Type Signature |
+|----------|---------|---------|----------------|
+| `^.` | view (get) | `alice ^. name → "Alice"` | `s -> Getting a s a -> a` |
+| `.~` | set | `name .~ "Bob" $ alice` | `Setter s t a b -> b -> s -> t` |
+| `%~` | over (modify) | `name %~ ("Dr. "++) $ alice` | `Setter s t a b -> (a->b) -> s -> t` |
+| `+~, *~` | numeric modify | `age +~ 5 $ person` | `Num a => Setter s t a a -> a -> s -> t` |
+| `<>~` | Monoid append | `tags <>~ ["haskell"] $ post` | `Monoid a => Setter s t a a -> a -> s -> t` |
+| `?~` | Maybe set (Just) | `middleName ?~ "Danger" $ person` | `Setter s t a (Maybe a) -> a -> s -> t` |
+| `.` | lens composition | `address . street . streetName` | `Lens s t a b -> Lens a b c d -> Lens s t c d` |
+
+## Key Concepts
+| Concept | Description | Usage |
+|---------|-------------|-------|
+| **Lens** | Bidirectional accessor | Get/set single field |
+| **Traversal** | Multiple targets | Modify multiple elements |
+| **Prism** | Sum type accessor | Work with Maybe/Either |
+| **Iso** | Isomorphism | Convert between types |
+
+## Common Patterns
+| Pattern | Code | Result |
+|---------|------|--------|
+| **Nested Access** | `user ^. address . street . streetName` | Get nested field |
+| **Nested Update** | `user & address . street . streetName .~ "New St"` | Update nested field |
+| **Multiple Updates** | `user & name .~ "Bob" & age +~ 1` | Chain updates |
+| **Conditional Set** | `user & middleName ?~ "X"` | Set Maybe field |
 5,aeson,haskell-aeson-examples,복잡 JSON 자동 파싱 + GitHub API 클라이언트 (deriveGeneric 활용),https://github.com/timothyylim/haskell-aeson-examples,stack run -- example-github-client
 6,servant,example-servant-minimal,"타입 안전 REST API 서버 (인증 + CRUD, Trello-like 미니 앱)",https://github.com/haskell-servant/example-servant-minimal,stack run → localhost:8080
 7,persistent + esqueleto,esqueleto blog examples,타입 안전 DB 쿼리 + 조인/full-text search (블로그 CMS 예제),https://github.com/bitemyapp/esqueleto/tree/master/examples,stack run -- migrate && stack run
