@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module LensesExample (someFunc5) where
+module LensesExample (someFunc5, advancedLensExample) where
 
 import Control.Lens
 import Data.Maybe (fromMaybe)
@@ -29,14 +29,15 @@ data Company = Company
   { _companyName :: String,
     _employees :: [User],
     _departments :: [Department]
-  } deriving (Show)
+  }
+  deriving (Show)
 
 data Department = Department
-  {
-    _deptName :: String,
+  { _deptName :: String,
     _budget :: Int,
     _manager :: Maybe User
-  } deriving (Show)
+  }
+  deriving (Show)
 
 makeLenses ''Company
 makeLenses ''Department

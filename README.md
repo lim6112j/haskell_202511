@@ -5,6 +5,21 @@
 4,lens + generic-lens,generic-lens modern setup,Generic으로 레코드 렌즈 자동 생성 + JSON 중첩 수정 (보일러플레이트 0),https://github.com/mtamc/generic-lens-modern-setup,stack build && stack exec example
 
 # Lens Library Reference
+## Type Name Quotation
+The `''` in `makeLenses ''User` is Template Haskell syntax for **type name quotation**.
+
+| Syntax | Meaning | Example |
+|--------|---------|---------|
+| `''TypeName` | Quote type name | `''User` → references the `User` type |
+| `'functionName` | Quote function name | `'map` → references the `map` function |
+| `[| expr |]` | Quote expression | `[| x + 1 |]` → quotes the expression |
+
+The `makeLenses ''User` tells Template Haskell to:
+1. Look at the `User` data type
+2. Find fields starting with `_` (like `_name`, `_address`)
+3. Generate lens functions (`name`, `address`) automatically
+
+Without `''`, it would try to find a variable named `User` instead of the type `User`.
 
 ## Core Operators
 | Operator | Meaning | Example | Type Signature |
