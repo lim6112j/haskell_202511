@@ -41,6 +41,26 @@ data Department = Department
 makeLenses ''Company
 makeLenses ''Department
 
+sampleCompany :: Company
+sampleCompany = Company "TechCorp" [alice, alice2] [Department "Engineering" 100000 (Just alice)]
+
+advancedLensExample :: IO ()
+advancedLensExample = do
+  putStrLn "=== Advanced Lens Examples ==="
+  putStrLn $ "sampleCompany: " ++ show sampleCompany
+  putStrLn $ "companyName: " ++ show (sampleCompany ^. companyName)
+  putStrLn $ "employees: " ++ show (sampleCompany ^. employees)
+  putStrLn $ "departments: " ++ show (sampleCompany ^. departments)
+  putStrLn $ "deptName: " ++ show (sampleCompany ^. departments . traverse . deptName)
+  putStrLn $ "budget: " ++ show (sampleCompany ^. departments . traverse . budget)
+  putStrLn $ "manager: " ++ show (sampleCompany ^. departments . traverse . manager)
+  putStrLn $ "manager name: " ++ show (sampleCompany ^. departments . traverse . manager . _Just . name)
+  putStrLn $ "manager address: " ++ show (sampleCompany ^. departments . traverse . manager . _Just . address)
+  putStrLn $ "manager street: " ++ show (sampleCompany ^. departments . traverse . manager . _Just . address . street)
+  putStrLn $ "manager street name: " ++ show (sampleCompany ^. departments . traverse . manager . _Just . address . street . streetName)
+  putStrLn $ "manager zip code: " ++ show (sampleCompany ^. departments . traverse . manager . _Just . address . zipCode)
+  putStrLn "=== End of Advanced Lens Examples ==="
+
 someFunc5 :: IO ()
 someFunc5 = do
   let user = User {_name = "John", _address = Address {_zipCode = "12345", _street = Street {_streetName = "Main Street"}}}
