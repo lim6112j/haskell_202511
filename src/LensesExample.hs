@@ -3,9 +3,9 @@
 module LensesExample (someFunc5) where
 
 import Control.Lens
-import Control.Lens.TH (makeLenses)
+import Data.Maybe (fromMaybe)
 
-data Street = Street {_streetName :: String} deriving (Show)
+newtype Street = Street {_streetName :: String} deriving (Show)
 
 data Address = Address {_zipCode :: String, _street :: Street} deriving (Show)
 
@@ -24,6 +24,22 @@ alice2 =
     & name .~ "Alice Kim"
     & address . zipCode .~ "54321"
     & address . street . streetName %~ ("Fancy " ++)
+
+data Company = Company
+{ _companyName :: String,
+  _employees :: [User],
+  _departments :: [Department]
+} deriving (Show)
+
+data Department = Department
+{
+  _deptName :: String,
+  _budget :: Int,
+  _manager :: Maybe User
+} deriving (Show)
+
+makeLenses ''Company
+makeLenses ''Department
 
 someFunc5 :: IO ()
 someFunc5 = do
