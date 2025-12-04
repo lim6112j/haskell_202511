@@ -26,17 +26,17 @@ alice2 =
     & address . street . streetName %~ ("Fancy " ++)
 
 data Company = Company
-{ _companyName :: String,
-  _employees :: [User],
-  _departments :: [Department]
-} deriving (Show)
+  { _companyName :: String,
+    _employees :: [User],
+    _departments :: [Department]
+  } deriving (Show)
 
 data Department = Department
-{
-  _deptName :: String,
-  _budget :: Int,
-  _manager :: Maybe User
-} deriving (Show)
+  {
+    _deptName :: String,
+    _budget :: Int,
+    _manager :: Maybe User
+  } deriving (Show)
 
 makeLenses ''Company
 makeLenses ''Department
