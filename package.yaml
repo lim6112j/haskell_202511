@@ -32,6 +32,9 @@ dependencies:
 - servant
 - servant-server
 - warp
+- persistent
+- persistent-sqlite
+- monad-logger
 
 ghc-options:
 - -Wall
@@ -45,7 +48,7 @@ ghc-options:
 - -Wredundant-constraints
 
 library:
-  source-dirs: src
+  source-dirs: [src, src/persistent]
 
 executables:
   taskflow-api-exe:
