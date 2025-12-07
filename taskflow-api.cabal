@@ -33,12 +33,12 @@ library
       TemplateExample
       TemplateImporting
       TextBytestring
+      PersistentExample
   other-modules:
-      Paths_taskflow_api
-  autogen-modules:
-      Paths_taskflow_api
+      Schema
   hs-source-dirs:
       src
+      src/persistent
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       aeson
@@ -46,7 +46,10 @@ library
     , bytestring
     , containers ==0.6.*
     , lens
+    , monad-logger
     , mtl
+    , persistent
+    , persistent-sqlite
     , servant
     , servant-server
     , template-haskell
@@ -70,7 +73,10 @@ executable taskflow-api-exe
     , bytestring
     , containers ==0.6.*
     , lens
+    , monad-logger
     , mtl
+    , persistent
+    , persistent-sqlite
     , servant
     , servant-server
     , taskflow-api
@@ -96,7 +102,10 @@ test-suite taskflow-api-test
     , bytestring
     , containers ==0.6.*
     , lens
+    , monad-logger
     , mtl
+    , persistent
+    , persistent-sqlite
     , servant
     , servant-server
     , taskflow-api
