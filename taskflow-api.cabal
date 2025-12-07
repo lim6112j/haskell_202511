@@ -29,6 +29,8 @@ library
       ContainerLib
       LensesExample
       MtlExample
+      MyAPI
+      ServantExample
       TemplateExample
       TemplateImporting
       TextBytestring
@@ -46,9 +48,12 @@ library
     , containers ==0.6.*
     , lens
     , mtl
+    , servant
+    , servant-server
     , template-haskell
     , text
     , time
+    , warp
   default-language: Haskell2010
 
 executable taskflow-api-exe
@@ -67,10 +72,13 @@ executable taskflow-api-exe
     , containers ==0.6.*
     , lens
     , mtl
+    , servant
+    , servant-server
     , taskflow-api
     , template-haskell
     , text
     , time
+    , warp
   default-language: Haskell2010
 
 test-suite taskflow-api-test
@@ -90,8 +98,11 @@ test-suite taskflow-api-test
     , containers ==0.6.*
     , lens
     , mtl
+    , servant
+    , servant-server
     , taskflow-api
     , template-haskell
     , text
     , time
+    , warp
   default-language: Haskell2010

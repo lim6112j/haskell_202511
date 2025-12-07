@@ -6,7 +6,7 @@ import LensesExample
 import MtlExample
 import TemplateExample
 import TextBytestring
-
+import ServantExample
 main :: IO ()
 main = do
   -- someFunc
@@ -14,5 +14,6 @@ main = do
   -- someFunc3
   -- someFunc4
   -- someFunc5
-  advancedLensExample
-  someFunc6
+  -- advancedLensExample
+  -- someFunc6
+  someFunc7

@@ -1,6 +1,6 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeOperators #-}
 
 module ServantExample (someFunc7) where
 
@@ -8,8 +8,9 @@ import Data.Text (Text)
 import Network.Wai.Handler.Warp (run)
 import Servant
 
-type MyAPI = "hello" :> Get '[JSON] Text
-        :<|> "greet" :> Capture "name" Text :> Get '[JSON] Text
+type MyAPI =
+  "hello" :> Get '[JSON] Text
+    :<|> "greet" :> Capture "name" Text :> Get '[JSON] Text
 
 server :: Server MyAPI
 server = helloHandler :<|> greetHandler
@@ -27,4 +28,3 @@ someFunc7 :: IO ()
 someFunc7 = do
   putStrLn "=== Servant Examples ==="
   run 8080 app
-  putStrLn "=== End of Servant Examples ==="
