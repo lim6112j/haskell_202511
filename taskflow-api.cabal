@@ -29,7 +29,6 @@ library
       ContainerLib
       LensesExample
       MtlExample
-      MyAPI
       ServantExample
       TemplateExample
       TemplateImporting
