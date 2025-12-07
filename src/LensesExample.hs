@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module LensesExample (someFunc5, advancedLensExample) where
+module LensesExample (someFunc5, advancedLensExample, alice, name) where
 
 import Control.Lens
 import Data.Maybe (fromMaybe)

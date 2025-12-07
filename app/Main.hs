@@ -1,5 +1,6 @@
 module Main (main) where
 
+import AesonExample
 import ContainerLib
 import LensesExample
 import MtlExample
@@ -14,3 +15,4 @@ main = do
   -- someFunc4
   -- someFunc5
   advancedLensExample
+  someFunc6

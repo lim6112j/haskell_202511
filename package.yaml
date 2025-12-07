@@ -28,6 +28,7 @@ dependencies:
 - mtl
 - template-haskell
 - lens
+- aeson
 
 ghc-options:
 - -Wall
