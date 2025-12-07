@@ -1,9 +1,14 @@
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeOperators #-}
+
 module ServantExample (someFunc7) where
 
 import Data.Text (Text)
-import MyAPI
 import Network.Wai.Handler.Warp (run)
 import Servant
+
+type MyAPI = "hello" :> Get '[JSON] Text
+        :<|> "greet" :> Capture "name" Text :> Get '[JSON] Text
 
 server :: Server MyAPI
 server = helloHandler :<|> greetHandler
