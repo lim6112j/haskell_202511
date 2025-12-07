@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module PersistentExample (someFunc8) where
 
 import Control.Monad.IO.Class (liftIO)
