@@ -3,7 +3,7 @@ module PersistentExample (someFunc8) where
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Logger (runStderrLoggingT)
 import Database.Persist
-import Database.Persist.Sqlite (runSqlite)
+import Database.Persist.Sqlite (runSqlite, runMigration)
 import Schema
 
 someFunc8 :: IO ()
