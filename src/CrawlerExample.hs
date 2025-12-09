@@ -96,7 +96,7 @@ crawlPage manager urlQueue visited url = do
                   when (sameDomain url normalized) $ do
                     atomically $ enqueueIfNew urlQueue visited normalized
   where
-    allLinks :: Scraper T.Text [T.Text]
+    allLinks :: Scraper BS.ByteString [T.Text]
     allLinks = chroots ("a" @: []) $ attr "href" anySelector
 
     makeAbsolute :: T.Text -> T.Text -> T.Text
