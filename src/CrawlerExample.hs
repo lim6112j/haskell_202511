@@ -23,7 +23,8 @@ newVisited :: IO Visited
 newVisited = newTVarIO Set.empty
 
 markVisited :: Visited -> T.Text -> STM Bool
-markVisited visitedSet ->
+markVisited visited url = do
+  visitedSet <- readTVar visited
   if Set.member url visitedSet
     then return False
     else do
