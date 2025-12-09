@@ -45,7 +45,7 @@ retryHttpExample :: IO ()
 retryHttpExample = Stamina.HTTP.retry settings $ \retryStatus -> do
   logRetryStatus retryStatus
   body <- makeRequest
-  case eitherDecode body of
+  case eitherDecode body :: Either String User of
     Left err -> fail $ "JSON decode error: " ++ err
     Right user -> liftIO $ print user
 
