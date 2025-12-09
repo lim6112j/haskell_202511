@@ -9,6 +9,7 @@ import TemplateExample
 import TextBytestring
 import ServantExample
 import OptparseExample
+import HttpClientExample
 
 main = do
   -- someFunc

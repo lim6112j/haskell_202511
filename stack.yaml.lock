@@ -3,7 +3,14 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/topics/lock_files
 
-packages: []
+packages:
+- completed:
+    hackage: stamina-0.1.0.3@sha256:7a41ce24449fdabb1ca8ef88fb46b5a6bb1c90a0da9017e92790f1397034217e,1349
+    pantry-tree:
+      sha256: 9572a3f5f4154270badfc88510613718d6ac326d70a693595b82978429e39d29
+      size: 426
+  original:
+    hackage: stamina-0.1.0.3@sha256:7a41ce24449fdabb1ca8ef88fb46b5a6bb1c90a0da9017e92790f1397034217e,1349
 snapshots:
 - completed:
     sha256: 238fa745b64f91184f9aa518fe04bdde6552533d169b0da5256670df83a0f1a9

@@ -48,8 +48,10 @@ library
     , bytestring
     , containers ==0.6.*
     , esqueleto
+    , exceptions
     , http-client
     , http-client-tls
+    , http-types
     , lens
     , monad-logger
     , mtl
@@ -80,8 +82,10 @@ executable taskflow-api-exe
     , bytestring
     , containers ==0.6.*
     , esqueleto
+    , exceptions
     , http-client
     , http-client-tls
+    , http-types
     , lens
     , monad-logger
     , mtl
@@ -114,8 +118,10 @@ test-suite taskflow-api-test
     , bytestring
     , containers ==0.6.*
     , esqueleto
+    , exceptions
     , http-client
     , http-client-tls
+    , http-types
     , lens
     , monad-logger
     , mtl

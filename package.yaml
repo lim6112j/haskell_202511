@@ -39,7 +39,9 @@ dependencies:
 - optparse-applicative
 - http-client
 - http-client-tls
+- http-types
 - stamina
+- exceptions
 
 ghc-options:
 - -Wall

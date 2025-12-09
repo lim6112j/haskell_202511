@@ -13,13 +13,13 @@ import Network.HTTP.Types.Header (hUserAgent)
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import System.IO (hPrint, stderr)
 import GHC.Generics (Generic)
-import qualified Stamina as Stamina
-import qualified Stamina.HTTP as Stamina.HTTP
+import qualified Stamina
+import qualified Stamina.HTTP
 
 -- Simple GitHub user data type (parsed with Aeson)
-data User = User { login :: T.Text } deriving (Show, Generic)
+newtype User = User { login :: T.Text } deriving (Show, Generic)
 
-instance FromJSON User
+instance FromJSON User where
 
 -- HTTP request action: Call Github API
 makeRequest :: MonadIO m => m BL.ByteString 
