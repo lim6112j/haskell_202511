@@ -4,9 +4,9 @@ module PersistentExample (someFunc8) where
 
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Logger (runStderrLoggingT)
-import Database.Persist
+import Database.Persist hiding (update, (==.), (=.))
 import Database.Persist.Sqlite (runSqlite, runMigration)
-import Database.Esqueleto hiding (update) -- Avoid conflict with persistent's update
+import Database.Esqueleto.Experimental
 import Data.Time (UTCTime, getCurrentTime)
 import Schema
 
@@ -49,7 +49,8 @@ someFunc8 = do
     liftIO $ putStrLn "\nJohn's age updated."
 
     -- Example 5: Delete a person
-    deleteWhere [PersonName ==. "Jane Smith"]
+    delete $ from $ \p -> do
+        where_ (p ^. PersonName ==. val "Jane Smith")
     liftIO $ putStrLn "\nJane Smith deleted."
 
     -- Verify changes
