@@ -4,8 +4,9 @@ import Options.Applicative
 
 data Options = Options
   { optVerbose :: Bool
-  , optInput   :: FilePath
-  , optOutput  :: FilePath
+  , optInput   :: Maybe FilePath
+  , optOutput  :: Maybe FilePath
+  , optArgs    :: [String]
   } deriving (Show, Eq)
   
 options :: Parser Options
@@ -14,16 +15,17 @@ options = Options
       ( long "verbose"
      <> short 'v'
      <> help "Enable verbose mode" )
-  <*> strOption
+  <*> optional (strOption
       ( long "input"
      <> short 'i'
      <> metavar "FILE"
-     <> help "Input file" )
-  <*> strOption
+     <> help "Input file" ))
+  <*> optional (strOption
       ( long "output"
      <> short 'o'
      <> metavar "FILE"
-     <> help "Output file" )
+     <> help "Output file" ))
+  <*> many (argument str (metavar "ARGS..."))
 
 someFunc9 :: IO ()
 someFunc9 = do
@@ -32,3 +34,6 @@ someFunc9 = do
                   <> progDesc "Process input file and write output"
                   <> header "Example program"))
   putStrLn $ "Options: " ++ show opts
+  case optArgs opts of
+    [] -> putStrLn "No arguments provided"
+    args -> putStrLn $ "Arguments: " ++ unwords args
