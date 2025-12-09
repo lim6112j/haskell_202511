@@ -4,7 +4,7 @@ module PersistentExample (someFunc8) where
 
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Logger (runStderrLoggingT)
-import Database.Persist hiding (update, (==.), (=.))
+import Database.Persist hiding (update, delete, (==.), (=.))
 import Database.Persist.Sqlite (runSqlite, runMigration)
 import Database.Esqueleto.Experimental
 import Data.Time (UTCTime, getCurrentTime)
