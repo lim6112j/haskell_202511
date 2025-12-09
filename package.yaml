@@ -37,6 +37,9 @@ dependencies:
 - monad-logger
 - esqueleto
 - optparse-applicative
+- http-client
+- http-client-tls
+- stamina
 
 ghc-options:
 - -Wall

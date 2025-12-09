@@ -58,6 +58,16 @@ Without `''`, it would try to find a variable named `User` instead of the type `
  • stack run -- -i input.txt -o output.txt hello world (will show all options)
 
 9,http-client + http-client-tls,stamina HTTP retry,Exponential backoff + 재시도 로직 (Rate Limit 자동 처리),https://github.com/cachix/stamina.hs,stack run -- retry-example
+
+http-client + http-client-tls: http-client는 HTTP 요청/응답을 처리하며, http-client-tls는 TLS(HTTPS) 지원을 추가합니다. Manager를 생성하여 연결 풀을 관리합니다.
+Stamina 라이브러리:
+Stamina.retry 또는 Stamina.HTTP.retry: 예외 발생 시 자동 재시도.
+RetrySettings: 초기 지연(initialDelay), 백오프 팩터(backoffFactor, 기본 2.0으로 지수 증가), 최대 지연(maxDelay), 최대 시도 횟수(maxAttempts), 총 시간 제한(maxTotalDelay) 설정.
+Stamina.HTTP: HTTP 전용으로, HttpException 중 재시도 가능한 것(타임아웃, 5xx 서버 오류, 429 Rate Limit)을 감지. 429 시 Retry-After 헤더를 자동 존중.
+
+Exponential Backoff: 지연 = initialDelay * (backoffFactor ^ attempts) + jitter. Jitter는 랜덤(0~지연 범위)으로 동시 재시도(Thundering Herd) 방지.
+Rate Limit 처리: 서버가 429 응답 시 Retry-After 헤더(초 단위 또는 HTTP-date)를 읽어 지연을 오버라이드.
+
 10,async + stm,haskell-web-crawler,1000 concurrent 크롤러 + STM 큐로 중복 제거 (웹 크롤링),https://github.com/jordanspooner/haskell-web-crawler,stack run -- https://news.ycombinator.com
 11,vector,kmeans-vector,"고성능 K-Means 클러스터링 (100만 점 0.8초 처리, unboxed vector)",https://github.com/alpmestan/kmeans-vector,stack run -- 1000000
 12,relude,protolude (relude-like template),"현대적 Prelude 템플릿 (에러 핸들링 + 안전 함수, 모든 프로젝트 적용)",https://github.com/sdiebert/protolude,stack new relude-template . && stack run

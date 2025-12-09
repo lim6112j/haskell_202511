@@ -27,6 +27,7 @@ library
   exposed-modules:
       AesonExample
       ContainerLib
+      HttpClientExample
       LensesExample
       MtlExample
       OptparseExample
@@ -47,6 +48,8 @@ library
     , bytestring
     , containers ==0.6.*
     , esqueleto
+    , http-client
+    , http-client-tls
     , lens
     , monad-logger
     , mtl
@@ -55,6 +58,7 @@ library
     , persistent-sqlite
     , servant
     , servant-server
+    , stamina
     , template-haskell
     , text
     , time
@@ -76,6 +80,8 @@ executable taskflow-api-exe
     , bytestring
     , containers ==0.6.*
     , esqueleto
+    , http-client
+    , http-client-tls
     , lens
     , monad-logger
     , mtl
@@ -84,6 +90,7 @@ executable taskflow-api-exe
     , persistent-sqlite
     , servant
     , servant-server
+    , stamina
     , taskflow-api
     , template-haskell
     , text
@@ -107,6 +114,8 @@ test-suite taskflow-api-test
     , bytestring
     , containers ==0.6.*
     , esqueleto
+    , http-client
+    , http-client-tls
     , lens
     , monad-logger
     , mtl
@@ -115,6 +124,7 @@ test-suite taskflow-api-test
     , persistent-sqlite
     , servant
     , servant-server
+    , stamina
     , taskflow-api
     , template-haskell
     , text
