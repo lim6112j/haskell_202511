@@ -36,6 +36,8 @@ workerCount maxConcurrent = do
   caps <- getNumCapabilities 
   pure $ max 256 (min maxConcurrent (caps * 64))
 
+spawnWorkers :: Int -> (Int -> IO ()) -> IO [Async ()]
+spawnWorkers n action = mapM (async . action) [1..n]
 
 someFunc11 :: IO ()
 someFunc11 = do
