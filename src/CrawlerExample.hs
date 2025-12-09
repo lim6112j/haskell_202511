@@ -72,7 +72,7 @@ crawlPage :: Manager -> UrlQueue -> Visited -> T.Text -> IO ()
 crawlPage manager urlQueue visited url = do
   putStrLn $ "[Crawling] " ++ T.unpack url
   -- stamina429/5xx 자동 재시도 
-  result <- Stamina.HTTP.retry settings $ do
+  result <- Stamina.HTTP.retry settings $ \_ -> do
     req <- parseRequest (T.unpack url)
     resp <- httpLbs req manager
     let body = responseBody resp
