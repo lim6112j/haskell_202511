@@ -56,7 +56,7 @@ normalizeUrl urlText = do
   let normalized = uri { uriPath = dropTrailingSlash (uriPath uri) }
   return $ T.pack $ uriToString id normalized ""
   where
-    dropTrailingSlash p 
+    dropTrailingSlash p
       | not (null p) && last p == '/' = init p
       | otherwise = p
 
@@ -98,14 +98,14 @@ crawlPage manager urlQueue visited url = do
                     atomically $ enqueueIfNew urlQueue visited normalized
   where
     allLinks :: Scraper BS.ByteString [T.Text]
-    allLinks = chroots ("a" @: []) $ fmap TE.decodeUtf8 $ attr "href" anySelector
+    allLinks = chroots ("a" @: []) $ (TE.decodeUtf8 <$> attr "href" anySelector)
 
     makeAbsolute :: T.Text -> T.Text -> T.Text
     makeAbsolute base rel =
       case parseURI (T.unpack rel) of
         Just u | isAbsoluteURI (T.unpack rel) -> T.pack (show u)
         _ -> case (parseURI (T.unpack base), parseURI (T.unpack rel)) of
-          (Just baseUri, Just relUri) -> 
+          (Just baseUri, Just relUri) ->
             T.pack $ uriToString id (relUri `relativeTo` baseUri) ""
           _ -> rel
 
@@ -116,4 +116,31 @@ crawlPage manager urlQueue visited url = do
 
 someFunc11 :: IO ()
 someFunc11 = do
-  putStrLn "someFunc11"
+  mgr <- newTlsManager
+
+  queue   <- newTQueueIO
+  visited <- newVisited
+
+  -- 시드 URL 투입
+  let seed = "https://example.com"
+  atomically $ do
+    writeTQueue queue seed
+    markVisited visited seed
+
+  -- 동시성 수 자동 조정 (최대 2000)
+  n <- workerCount 2000
+  putStrLn $ "Starting " ++ show n ++ " concurrent workers..."
+
+  -- 모든 워커가 큐가 빌 때까지 대기
+  let worker i = forever $ do
+        url <- atomically $ readTQueue queue
+        crawlPage mgr queue visited url
+        -- Rate limit 방지: 아주 가벼운 delay (필요시 조정)
+        threadDelay 50_000  -- 50ms
+
+  workers <- spawnWorkers n worker
+
+  -- 30분 후 강제 종료 (또는 Ctrl+C)
+  threadDelay (30 * 60 * 1_000_000)
+  putStrLn "Timeout reached. Shutting down..."
+  mapM_ cancel workers
