@@ -8,6 +8,8 @@ import PersistentExample
 import TemplateExample
 import TextBytestring
 import ServantExample
+import OptparseExample
+
 main = do
   -- someFunc
   -- somefunc2
@@ -17,4 +19,5 @@ main = do
   -- advancedLensExample
   -- someFunc6
   -- someFunc7
-  someFunc8
+  -- someFunc8
+  someFunc9

@@ -36,6 +36,8 @@ dependencies:
 - persistent-sqlite
 - monad-logger
 - esqueleto
+- optparse-applicative
+
 ghc-options:
 - -Wall
 - -Wcompat

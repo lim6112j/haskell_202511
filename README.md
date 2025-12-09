@@ -50,7 +50,13 @@ Without `''`, it would try to find a variable named `User` instead of the type `
 5,aeson,haskell-aeson-examples,복잡 JSON 자동 파싱 + GitHub API 클라이언트 (deriveGeneric 활용),https://github.com/timothyylim/haskell-aeson-examples,stack run -- example-github-client
 6,servant,example-servant-minimal,"타입 안전 REST API 서버 (인증 + CRUD, Trello-like 미니 앱)",https://github.com/haskell-servant/example-servant-minimal,stack run → localhost:8080
 7,persistent + esqueleto,esqueleto blog examples,타입 안전 DB 쿼리 + 조인/full-text search (블로그 CMS 예제),https://github.com/bitemyapp/esqueleto/tree/master/examples,stack run -- migrate && stack run
+
 8,optparse-applicative,optparse-applicative CLI examples,복잡 CLI 서브커맨드 + GitHub 백업 툴 (bash completion 포함),https://github.com/pcapriotti/optparse-applicative/tree/master/examples,stack run -- backup --user yourusername
+
+ • stack run -- hello (will show "Arguments: hello")
+ • stack run -- -v hello (will show verbose mode + "Arguments: hello")
+ • stack run -- -i input.txt -o output.txt hello world (will show all options)
+
 9,http-client + http-client-tls,stamina HTTP retry,Exponential backoff + 재시도 로직 (Rate Limit 자동 처리),https://github.com/cachix/stamina.hs,stack run -- retry-example
 10,async + stm,haskell-web-crawler,1000 concurrent 크롤러 + STM 큐로 중복 제거 (웹 크롤링),https://github.com/jordanspooner/haskell-web-crawler,stack run -- https://news.ycombinator.com
 11,vector,kmeans-vector,"고성능 K-Means 클러스터링 (100만 점 0.8초 처리, unboxed vector)",https://github.com/alpmestan/kmeans-vector,stack run -- 1000000

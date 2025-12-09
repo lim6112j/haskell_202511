@@ -29,6 +29,7 @@ library
       ContainerLib
       LensesExample
       MtlExample
+      OptparseExample
       ServantExample
       TemplateExample
       TemplateImporting
@@ -49,6 +50,7 @@ library
     , lens
     , monad-logger
     , mtl
+    , optparse-applicative
     , persistent
     , persistent-sqlite
     , servant
@@ -77,6 +79,7 @@ executable taskflow-api-exe
     , lens
     , monad-logger
     , mtl
+    , optparse-applicative
     , persistent
     , persistent-sqlite
     , servant
@@ -107,6 +110,7 @@ test-suite taskflow-api-test
     , lens
     , monad-logger
     , mtl
+    , optparse-applicative
     , persistent
     , persistent-sqlite
     , servant
