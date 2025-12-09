@@ -19,7 +19,8 @@ import GHC.Generics (Generic)
 -- Simple GitHub user data type (parsed with Aeson)
 data User = User { login :: T.Text } deriving (Show, Generic)
 
-instance FromJSON User
+instance FromJSON User where
+  parseJSON = withObject "User" $ \v -> User <$> v .: "login"
 
 -- HTTP request action: Call Github API
 makeRequest :: MonadIO m => m BL.ByteString 
@@ -28,25 +29,36 @@ makeRequest = liftIO $ do
   request <- parseRequest "https://api.github.com/users/octocat"
   response <- httpLbs request manager
   let status = responseStatus response
-  return $ responseBody response
+  if statusCode status == 429
+    then fail "Rate limited (429)"
+    else return $ responseBody response
+-- 재시도 핸들러: 예회 발생 시 로그 출력 및 상태 확인
+logRetryStatus :: MonadIO m => Stamina.RetryStatus -> m ()
+logRetryStatus status = liftIO $ do
+  let attempts = Stamina.attempts status
+      delay = Stamina.delay status
+      lastExc = Stamina.lastException status
+  hPrint stderr $ "Retry attemp " ++ show attampts ++ " after" ++ show  delay ++ "s. last error: "  ++ show lastExc
+-- 메인 재시도 로직: Stamina.HTTP. retry 사용
+retryHttpExample :: IO ()
+retryHttpExample = Stamina.HTTP.retry settings $ \retryStatus -> do
+  logRetryStatus retryStatus
+  body <- makeRequest
+  case eitherDecode user body of
+    Left err -> fail $ "JSON decode error: " ++ err
+    Right user -> liftIO $ print user
 
+settings :: Stamina.RetrySettings
+settings = Stamina.RetrySettings
+  { Stamina.initialDelay = 1.0 
+  , Stamina.backoffFactor = 2.0
+  , Stamina.jitter = True
+  , Stamina.maxDelay = 30.0
+  , Stamina.maxAttempts = 5
+  , Stamina.maxTotalDelay = 60.0
+  }
 someFunc10 :: IO ()
 someFunc10 = do
   putStrLn "=== HTTP Client Example with Stamina Retry ==="
-  
-  -- Create a retry settings with exponential backoff
-  let retrySettings = Stamina.defaults
-  
-  -- Execute request with retry logic
-  result <- Stamina.retry retrySettings $ \retryStatus -> do
-    putStrLn $ "Making HTTP request..."
-    body <- makeRequest
-    case eitherDecode body :: Either String User of
-      Left err -> do
-        putStrLn $ "Parse error: " ++ err
-        return body
-      Right user -> do
-        putStrLn $ "Successfully fetched user: " ++ T.unpack (login user)
-        return body
-  
+  retryHttpExample 
   putStrLn "=== End of HTTP Client Example ==="
