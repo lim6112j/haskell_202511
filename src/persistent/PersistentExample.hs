@@ -36,8 +36,9 @@ someFunc8 = do
     liftIO $ mapM_ print johns
 
     -- Example 3: Select blog posts with their author's name
-    postsWithAuthors <- select $ from $ \(p `InnerJoin` bp) -> do
-        on (p ^. PersonId ==. bp ^. BlogPostPersonId)
+    postsWithAuthors <- select $ do
+        (p :& bp) <- from $ table @Person `innerJoin` table @BlogPost `on` do
+            \(p :& bp) -> p ^. PersonId ==. bp ^. BlogPostPersonId
         orderBy [desc (bp ^. BlogPostCreatedAt)]
         return (p ^. PersonName, bp ^. BlogPostTitle)
     liftIO $ putStrLn "\nBlog Posts with Authors:"
