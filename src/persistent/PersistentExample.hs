@@ -54,12 +54,13 @@ someFunc8 = do
     liftIO $ putStrLn "\nJohn's age updated."
 
     -- Example 5: Delete a person (first delete their blog posts to avoid foreign key constraint)
-    -- Delete Jane's blog posts first
+    -- Delete Jane's blog posts first using a subquery
     delete $ do
         bp <- from $ table @BlogPost
-        p <- from $ table @Person
-        where_ (bp ^. BlogPostPersonId ==. p ^. PersonId)
-        where_ (p ^. PersonName ==. val "Jane Smith")
+        where_ $ bp ^. BlogPostPersonId `in_` do
+            p <- from $ table @Person
+            where_ (p ^. PersonName ==. val "Jane Smith")
+            return (p ^. PersonId)
     -- Now delete Jane
     delete $ do
         p <- from $ table @Person
