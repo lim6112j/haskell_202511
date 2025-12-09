@@ -24,13 +24,15 @@ someFunc8 = do
     _ <- insert $ BlogPost janeId "Jane's Blog" "Hello from Jane!" currentTime
 
     -- Example 1: Select all persons
-    persons <- select $ from $ \p -> do
+    persons <- select $ do
+        p <- from $ table @Person
         return p
     liftIO $ putStrLn "All Persons:"
     liftIO $ mapM_ print persons
 
     -- Example 2: Select persons named "John Doe"
-    johns <- select $ from $ \p -> do
+    johns <- select $ do
+        p <- from $ table @Person
         where_ (p ^. PersonName ==. val "John Doe")
         return p
     liftIO $ putStrLn "\nPersons named John Doe:"
@@ -52,12 +54,15 @@ someFunc8 = do
     liftIO $ putStrLn "\nJohn's age updated."
 
     -- Example 5: Delete a person
-    delete $ from $ \p -> do
+    delete $ do
+        p <- from $ table @Person
         where_ (p ^. PersonName ==. val "Jane Smith")
     liftIO $ putStrLn "\nJane Smith deleted."
 
     -- Verify changes
-    remainingPersons <- select $ from $ \p -> return p
+    remainingPersons <- select $ do
+        p <- from $ table @Person
+        return p
     liftIO $ putStrLn "\nRemaining Persons:"
     liftIO $ mapM_ print remainingPersons
   putStrLn "=== End of Persistent Examples ==="
