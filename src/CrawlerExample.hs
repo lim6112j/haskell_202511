@@ -1,11 +1,12 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE NumericUnderscores #-}
 
 module CrawlerExample where
 
 import Control.Concurrent (getNumCapabilities, threadDelay)
-import Control.Concurrent.Async (Async, async, mapConcurrently_, wait)
+import Control.Concurrent.Async (Async, async, mapConcurrently_, wait, cancel)
 import Control.Concurrent.STM
 import Control.Monad (forM_, forever, void, when)
 import Control.Exception (try, SomeException)
