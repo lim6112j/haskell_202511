@@ -57,10 +57,10 @@ someFunc8 = do
     -- Delete Jane's blog posts first using a subquery
     delete $ do
         bp <- from $ table @BlogPost
-        where_ $ bp ^. BlogPostPersonId `in_` subList_select do
+        where_ $ bp ^. BlogPostPersonId `in_` subList_select (do
             p <- from $ table @Person
             where_ (p ^. PersonName ==. val "Jane Smith")
-            return (p ^. PersonId)
+            return (p ^. PersonId))
     -- Now delete Jane
     delete $ do
         p <- from $ table @Person
