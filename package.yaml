@@ -35,7 +35,6 @@ dependencies:
 - persistent
 - persistent-sqlite
 - monad-logger
-- database
 
 ghc-options:
 - -Wall
