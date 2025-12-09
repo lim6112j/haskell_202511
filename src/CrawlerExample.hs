@@ -7,11 +7,13 @@ import Control.Concurrent (getNumCapabilities, threadDelay)
 import Control.Concurrent.Async (Async, async, mapConcurrently_, wait)
 import Control.Concurrent.STM
 import Control.Monad (forM_, forever, void, when)
+import Control.Exception (try, SomeException)
 import Data.Maybe (catMaybes, fromMaybe, fromJust, isJust)
 import Data.Set (Set)
 import qualified Data.Set as Set
 import qualified Data.Text as T
 import qualified Data.ByteString.Lazy as BL
+import qualified Data.ByteString as BS
 import GHC.Generics (Generic)
 import Network.HTTP.Client
 import Network.HTTP.Client.TLS (newTlsManager)
@@ -72,13 +74,13 @@ crawlPage :: Manager -> UrlQueue -> Visited -> T.Text -> IO ()
 crawlPage manager urlQueue visited url = do
   putStrLn $ "[Crawling] " ++ T.unpack url
   -- stamina429/5xx 자동 재시도 
-  result <- Stamina.HTTP.retry settings $ \_ -> do
+  result <- try $ Stamina.HTTP.retry settings $ \_ -> do
     req <- parseRequest (T.unpack url)
     resp <- httpLbs req manager
     let body = responseBody resp
     pure (responseStatus resp, BL.toStrict body)
   case result of
-    Left err -> putStrLn $ "[Error] " ++ show err
+    Left (err :: SomeException) -> putStrLn $ "[Error] " ++ show err
     Right (status, body) -> do
       when (status == status200) $ do
         let links = scrapeStringLike body allLinks
