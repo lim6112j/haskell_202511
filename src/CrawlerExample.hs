@@ -7,14 +7,16 @@ import Control.Concurrent (getNumCapabilities, threadDelay)
 import Control.Concurrent.Async (Async, async, mapConcurrently_, wait)
 import Control.Concurrent.STM
 import Control.Monad (forM_, forever, void, when)
-import Data.Maybe (catMaybes, fromMaybe)
+import Data.Maybe (catMaybes, fromMaybe, fromJust, isJust)
 import Data.Set (Set)
 import qualified Data.Set as Set
 import qualified Data.Text as T
+import qualified Data.ByteString.Lazy as BL
 import GHC.Generics (Generic)
 import Network.HTTP.Client
 import Network.HTTP.Client.TLS (newTlsManager)
-import Network.URI (URI (..), URIAuth (..), parseURI)
+import Network.URI (URI (..), URIAuth (..), parseURI, uriToString, relativeTo, isAbsoluteURI)
+import Network.HTTP.Types.Status (status200)
 import Text.HTML.Scalpel.Core
 import qualified Stamina
 import qualified Stamina.HTTP
@@ -44,19 +46,15 @@ spawnWorkers :: Int -> (Int -> IO ()) -> IO [Async ()]
 spawnWorkers n action = mapM (async . action) [1 .. n]
 
 -- url 정규화
-
-normalizeUrl :: T.Text -> T.Text
-normalizeUrl =
-  T.strip
-    . T.pack
-    . (\u -> u {uriPath = dropTrailingSlash (uriPath u)})
-    . fromMaybe (error "invalid url")
-    . parseURI
-    . T.unpack
+normalizeUrl :: T.Text -> Maybe T.Text
+normalizeUrl urlText = do
+  uri <- parseURI (T.unpack urlText)
+  let normalized = uri { uriPath = dropTrailingSlash (uriPath uri) }
+  return $ T.pack $ uriToString id normalized ""
   where
-    dropTrailingSlash p | lastMay p == '/' = init p
-                        | otherwise = p
-    lastMay xs | null xs = Nothing | otherwise = Just (last xs)
+    dropTrailingSlash p 
+      | not (null p) && last p == '/' = init p
+      | otherwise = p
 
 settings :: Stamina.RetrySettings
 settings = Stamina.defaults
@@ -70,13 +68,11 @@ sameDomain base url = case (parseURI (T.unpack base), parseURI (T.unpack url)) o
   _ -> False
 
 -- crawling logic
-
 crawlPage :: Manager -> UrlQueue -> Visited -> T.Text -> IO ()
 crawlPage manager urlQueue visited url = do
   putStrLn $ "[Crawling] " ++ T.unpack url
   -- stamina429/5xx 자동 재시도 
-  result <- Stamina.HTTP.retry settings 
-  $ do
+  result <- Stamina.HTTP.retry settings $ do
     req <- parseRequest (T.unpack url)
     resp <- httpLbs req manager
     let body = responseBody resp
@@ -85,28 +81,35 @@ crawlPage manager urlQueue visited url = do
     Left err -> putStrLn $ "[Error] " ++ show err
     Right (status, body) -> do
       when (status == status200) $ do
-        let links = catMaybes $ scrapeStringLike body $ chroots ("a" @: []) $ attr "href"
-        forM_ links $ \link -> do
-          let normalized = normalizeUrl link
-          when (sameDomain url normalized) $ do
-            isVisited <- atomically $ markVisited visited normalized
-            when isVisited $ atomically $ writeTQueue urlQueue normalized
+        let links = scrapeStringLike body allLinks
+        case links of
+          Nothing -> putStrLn "[Warning] Failed to parse links"
+          Just linkList -> do
+            forM_ linkList $ \link -> do
+              let absUrl = makeAbsolute url link
+              case normalizeUrl absUrl of
+                Nothing -> return ()
+                Just normalized -> do
+                  when (sameDomain url normalized) $ do
+                    atomically $ enqueueIfNew urlQueue visited normalized
   where
     allLinks :: Scraper T.Text [T.Text]
-    allLinks = chroots ("a" @: [hasClass "href"]) $ attr "href" anySelector
+    allLinks = chroots ("a" @: []) $ attr "href" anySelector
 
     makeAbsolute :: T.Text -> T.Text -> T.Text
     makeAbsolute base rel =
       case parseURI (T.unpack rel) of
         Just u | isAbsoluteURI (T.unpack rel) -> T.pack (show u)
-        _ -> T.pack $ uriToString id (relativeTo (fromJust $ parseURI $ T.unpack rel)
-                                               (fromJust $ parseURI $ T.unpack base)) ""
+        _ -> case (parseURI (T.unpack base), parseURI (T.unpack rel)) of
+          (Just baseUri, Just relUri) -> 
+            T.pack $ uriToString id (relUri `relativeTo` baseUri) ""
+          _ -> rel
 
-    enqueueIfNew :: UrlQueue -> Visited -> T.Text -> STM Bool
+    enqueueIfNew :: UrlQueue -> Visited -> T.Text -> STM ()
     enqueueIfNew q v u = do
-      ok <- markVisited v (normalizeUrl u)
-      when ok $ writeTQueue q (normalizeUrl u)
-      return ok
+      ok <- markVisited v u
+      when ok $ writeTQueue q u
+
 someFunc11 :: IO ()
 someFunc11 = do
   putStrLn "someFunc11"
