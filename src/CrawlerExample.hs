@@ -13,6 +13,7 @@ import Data.Maybe (catMaybes, fromMaybe, fromJust, isJust)
 import Data.Set (Set)
 import qualified Data.Set as Set
 import qualified Data.Text as T
+import qualified Data.Text.Encoding as TE
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.ByteString as BS
 import GHC.Generics (Generic)
@@ -97,7 +98,7 @@ crawlPage manager urlQueue visited url = do
                     atomically $ enqueueIfNew urlQueue visited normalized
   where
     allLinks :: Scraper BS.ByteString [T.Text]
-    allLinks = chroots ("a" @: []) $ attr "href" anySelector
+    allLinks = chroots ("a" @: []) $ fmap TE.decodeUtf8 $ attr "href" anySelector
 
     makeAbsolute :: T.Text -> T.Text -> T.Text
     makeAbsolute base rel =
