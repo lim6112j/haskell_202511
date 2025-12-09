@@ -6,7 +6,7 @@ module PersistentExample (someFunc8) where
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Logger (runStderrLoggingT)
 import Database.Persist hiding (update, delete, (==.), (=.))
-import Database.Persist.Sqlite (runSqlite, runMigration)
+import Database.Persist.Sqlite (runSqlite)
 import Database.Esqueleto.Experimental
 import Data.Time (getCurrentTime)
 import Schema
@@ -53,11 +53,18 @@ someFunc8 = do
         where_ (p ^. PersonName ==. val "John Doe")
     liftIO $ putStrLn "\nJohn's age updated."
 
-    -- Example 5: Delete a person
+    -- Example 5: Delete a person (first delete their blog posts to avoid foreign key constraint)
+    -- Delete Jane's blog posts first
+    delete $ do
+        bp <- from $ table @BlogPost
+        p <- from $ table @Person
+        where_ (bp ^. BlogPostPersonId ==. p ^. PersonId)
+        where_ (p ^. PersonName ==. val "Jane Smith")
+    -- Now delete Jane
     delete $ do
         p <- from $ table @Person
         where_ (p ^. PersonName ==. val "Jane Smith")
-    liftIO $ putStrLn "\nJane Smith deleted."
+    liftIO $ putStrLn "\nJane Smith and her blog posts deleted."
 
     -- Verify changes
     remainingPersons <- select $ do
