@@ -25,8 +25,7 @@ someFunc8 = do
 
     -- Example 1: Select all persons
     persons <- select $ do
-        p <- from $ table @Person
-        return p
+        from $ table @Person
     liftIO $ putStrLn "All Persons:"
     liftIO $ mapM_ print persons
 
@@ -69,8 +68,7 @@ someFunc8 = do
 
     -- Verify changes
     remainingPersons <- select $ do
-        p <- from $ table @Person
-        return p
+        from $ table @Person
     liftIO $ putStrLn "\nRemaining Persons:"
     liftIO $ mapM_ print remainingPersons
   putStrLn "=== End of Persistent Examples ==="
