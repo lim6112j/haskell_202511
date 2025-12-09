@@ -12,7 +12,18 @@ import qualified Stamina as Stamina
 import qualified Stamina.HTTP as Stamina.HTTP
 import System.IO (hPrint, stderr)
 
+-- 간단한 GitHub 사용자 데이터 타입 (Aeson으로 파싱)
+data User = User { login :: T.Text } deriving (Show)
+instance FromJSON User where
+  parseJSON = withObject "User" $ \v -> User <$> v .: "login"
 
+-- HTTP 요청 액션: Github API 호출
+makeRequest :: MonadIO m => m BL.ByteString 
+makeRequest = listIO $ do 
+  manager <- newManager tlsManagerSettings
+  request <- parseRequest "https://api.github.com/users/octocat"
+  response <- httpLbs request manager
+  let status = responseStatus response
 someFunc10 :: IO ()
 someFunc10 = do
   putStrLn "HttpClientExample"
