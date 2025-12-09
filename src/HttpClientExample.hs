@@ -6,15 +6,15 @@ module HttpClientExample(someFunc10) where
 import qualified Data.ByteString.Lazy.Char8 as BL
 import Data.Aeson (eitherDecode, FromJSON)
 import qualified Data.Text as T
-import Network.HTTP.Client (newManager, parseRequest, httpLbs, responseBody, responseStatus)
+import Network.HTTP.Client (newManager, parseRequest, httpLbs, responseBody, responseStatus, requestHeaders)
 import Network.HTTP.Client.TLS (tlsManagerSettings)
 import Network.HTTP.Types.Status (statusCode)
+import Network.HTTP.Types.Header (hUserAgent)
 import Control.Monad.IO.Class (MonadIO, liftIO)
-import Control.Monad.Catch (MonadCatch)
-import qualified Stamina as Stamina
-import qualified Stamina.HTTP as Stamina.HTTP
 import System.IO (hPrint, stderr)
 import GHC.Generics (Generic)
+import qualified Stamina as Stamina
+import qualified Stamina.HTTP as Stamina.HTTP
 
 -- Simple GitHub user data type (parsed with Aeson)
 data User = User { login :: T.Text } deriving (Show, Generic)
@@ -25,7 +25,8 @@ instance FromJSON User
 makeRequest :: MonadIO m => m BL.ByteString 
 makeRequest = liftIO $ do 
   manager <- newManager tlsManagerSettings
-  request <- parseRequest "https://api.github.com/users/octocat"
+  initialRequest <- parseRequest "https://api.github.com/users/octocat"
+  let request = initialRequest { requestHeaders = [(hUserAgent, "taskflow-api-haskell")] }
   response <- httpLbs request manager
   let status = responseStatus response
   if statusCode status == 429
