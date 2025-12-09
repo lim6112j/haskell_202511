@@ -7,7 +7,7 @@ import Control.Monad.Logger (runStderrLoggingT)
 import Database.Persist hiding (update, delete, (==.), (=.))
 import Database.Persist.Sqlite (runSqlite, runMigration)
 import Database.Esqueleto.Experimental
-import Data.Time (UTCTime, getCurrentTime)
+import Data.Time (getCurrentTime)
 import Schema
 
 someFunc8 :: IO ()
@@ -16,10 +16,11 @@ someFunc8 = do
   runStderrLoggingT $ runSqlite ":memory:" $ do
     runMigration migrateAll
     -- Insert some data
-    johnId <- insert $ Person "John Doe" (Just 30)
-    janeId <- insert $ Person "Jane Smith" Nothing
-    _ <- insert $ BlogPost johnId "My First Post" "Content of John's first post." =<< liftIO getCurrentTime
-    _ <- insert $ BlogPost janeId "Jane's Blog" "Hello from Jane!" =<< liftIO getCurrentTime
+    johnId <- insert $ Person "John Doe" 30
+    janeId <- insert $ Person "Jane Smith" 25
+    currentTime <- liftIO getCurrentTime
+    _ <- insert $ BlogPost johnId "My First Post" "Content of John's first post." currentTime
+    _ <- insert $ BlogPost janeId "Jane's Blog" "Hello from Jane!" currentTime
 
     -- Example 1: Select all persons
     persons <- select $ from $ \p -> do
@@ -44,7 +45,7 @@ someFunc8 = do
 
     -- Example 4: Update a person's age
     update $ \p -> do
-        set p [PersonAge =. just (val 31)]
+        set p [PersonAge =. val 31]
         where_ (p ^. PersonName ==. val "John Doe")
     liftIO $ putStrLn "\nJohn's age updated."
 
