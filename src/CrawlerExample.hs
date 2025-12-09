@@ -30,8 +30,9 @@ markVisited visited url = do
     else do
       writeTVar visited (Set.insert url visitedSet)
       return True
--- concurrent
-workerCount :: Int = maxConcurrent = do
+
+workerCount :: Int -> IO Int
+workerCount maxConcurrent = do
   caps <- getNumCapabilities 
   pure $ max 256 (min maxConcurrent (caps * 64))
 
