@@ -3,7 +3,7 @@
 module CrawlerExample where
 
 import Control.Concurrent (getNumCapabilities, threadDelay)
-import Control.Concurrent.Async (mapConcurrently_, async, wait)
+import Control.Concurrent.Async (mapConcurrently_, async, wait, Async)
 import Control.Concurrent.STM
 import Control.Monad (forever, forM_, void, when)
 import Data.Set (Set)
