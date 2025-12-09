@@ -45,6 +45,7 @@ library
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
+    , database
     , lens
     , monad-logger
     , mtl
@@ -72,6 +73,7 @@ executable taskflow-api-exe
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
+    , database
     , lens
     , monad-logger
     , mtl
@@ -101,6 +103,7 @@ test-suite taskflow-api-test
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
+    , database
     , lens
     , monad-logger
     , mtl
