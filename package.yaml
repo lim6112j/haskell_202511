@@ -42,6 +42,10 @@ dependencies:
 - http-types
 - stamina
 - exceptions
+- async
+- stm
+- network-uri
+- scalpel-core
 
 ghc-options:
 - -Wall

@@ -10,7 +10,7 @@ import TextBytestring
 import ServantExample
 import OptparseExample
 import HttpClientExample
-
+import CrawlerExample
 main = do
   -- someFunc
   -- somefunc2
@@ -22,4 +22,5 @@ main = do
   -- someFunc7
   -- someFunc8
   -- someFunc9
-  someFunc10
+  -- someFunc10
+  someFunc11

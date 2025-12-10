@@ -27,6 +27,7 @@ library
   exposed-modules:
       AesonExample
       ContainerLib
+      CrawlerExample
       HttpClientExample
       LensesExample
       MtlExample
@@ -44,6 +45,7 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       aeson
+    , async
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
@@ -55,12 +57,15 @@ library
     , lens
     , monad-logger
     , mtl
+    , network-uri
     , optparse-applicative
     , persistent
     , persistent-sqlite
+    , scalpel-core
     , servant
     , servant-server
     , stamina
+    , stm
     , template-haskell
     , text
     , time
@@ -78,6 +83,7 @@ executable taskflow-api-exe
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
+    , async
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
@@ -89,12 +95,15 @@ executable taskflow-api-exe
     , lens
     , monad-logger
     , mtl
+    , network-uri
     , optparse-applicative
     , persistent
     , persistent-sqlite
+    , scalpel-core
     , servant
     , servant-server
     , stamina
+    , stm
     , taskflow-api
     , template-haskell
     , text
@@ -114,6 +123,7 @@ test-suite taskflow-api-test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
+    , async
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
@@ -125,12 +135,15 @@ test-suite taskflow-api-test
     , lens
     , monad-logger
     , mtl
+    , network-uri
     , optparse-applicative
     , persistent
     , persistent-sqlite
+    , scalpel-core
     , servant
     , servant-server
     , stamina
+    , stm
     , taskflow-api
     , template-haskell
     , text
