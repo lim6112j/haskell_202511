@@ -47,9 +47,6 @@ dependencies:
 - network-uri
 - scalpel-core
 - relude
-- safe-exceptions
-- unliftio
-- postgresql-simple
 
 ghc-options:
 - -Wall
