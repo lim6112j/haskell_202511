@@ -49,6 +49,7 @@ dependencies:
 - relude
 - safe-exceptions
 - unliftio
+- postgresql-simple
 
 ghc-options:
 - -Wall

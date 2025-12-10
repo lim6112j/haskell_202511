@@ -30,7 +30,6 @@ library
       CrawlerExample
       HttpClientExample
       LensesExample
-      MonadMaskExample
       MtlExample
       OptparseExample
       ServantExample
@@ -62,6 +61,7 @@ library
     , optparse-applicative
     , persistent
     , persistent-sqlite
+    , postgresql-simple
     , relude
     , safe-exceptions
     , scalpel-core
@@ -103,6 +103,7 @@ executable taskflow-api-exe
     , optparse-applicative
     , persistent
     , persistent-sqlite
+    , postgresql-simple
     , relude
     , safe-exceptions
     , scalpel-core
@@ -146,6 +147,7 @@ test-suite taskflow-api-test
     , optparse-applicative
     , persistent
     , persistent-sqlite
+    , postgresql-simple
     , relude
     , safe-exceptions
     , scalpel-core
