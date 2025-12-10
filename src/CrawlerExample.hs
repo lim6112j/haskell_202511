@@ -1,23 +1,22 @@
-{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE NumericUnderscores #-}
+{-# OPTIONS_GHC -Wno-missing-export-lists #-}
 
 module CrawlerExample where
 
 import Control.Concurrent (getNumCapabilities, threadDelay)
-import Control.Concurrent.Async (Async, async, mapConcurrently_, wait, cancel)
+import Control.Concurrent.Async (Async, async, cancel)
 import Control.Concurrent.STM
 import Control.Monad (forM_, forever, void, when)
 import Control.Exception (try, SomeException)
-import Data.Maybe (catMaybes, fromMaybe, fromJust, isJust)
+import Data.Maybe (fromMaybe)
 import Data.Set (Set)
 import qualified Data.Set as Set
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as TE
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.ByteString as BS
-import GHC.Generics (Generic)
 import Network.HTTP.Client
 import Network.HTTP.Client.TLS (newTlsManager)
 import Network.URI (URI (..), URIAuth (..), parseURI, uriToString, relativeTo, isAbsoluteURI)
@@ -86,10 +85,12 @@ crawlPage manager urlQueue visited url = do
     Left (err :: SomeException) -> putStrLn $ "[Error] " ++ show err
     Right (status, body) -> do
       when (status == status200) $ do
+        putStrLn $ "[Success] " ++ T.unpack url ++ " (" ++ show (BS.length body) ++ " bytes)" 
         let links = scrapeStringLike body allLinks
         case links of
           Nothing -> putStrLn "[Warning] Failed to parse links"
           Just linkList -> do
+            putStrLn $ "[Found] " ++ show (length linkList) ++ " links on " ++ T.unpack url
             forM_ linkList $ \link -> do
               let absUrl = makeAbsolute url link
               case normalizeUrl absUrl of
@@ -99,7 +100,7 @@ crawlPage manager urlQueue visited url = do
                     atomically $ enqueueIfNew urlQueue visited normalized
   where
     allLinks :: Scraper BS.ByteString [T.Text]
-    allLinks = chroots ("a" @: []) $ (TE.decodeUtf8 <$> attr "href" anySelector)
+    allLinks = chroots ("a" @: []) (TE.decodeUtf8 <$> attr "href" anySelector)
 
     makeAbsolute :: T.Text -> T.Text -> T.Text
     makeAbsolute base rel =
@@ -123,8 +124,8 @@ someFunc11 = do
   visited <- newVisited
 
   -- 시드 URL 투입
-  let seed = "https://example.com"
-  atomically $ do
+  let seed = "https://books.toscrape.com"
+  _ <- atomically $ do
     writeTQueue queue seed
     markVisited visited seed
 
@@ -133,15 +134,17 @@ someFunc11 = do
   putStrLn $ "Starting " ++ show n ++ " concurrent workers..."
 
   -- 모든 워커가 큐가 빌 때까지 대기
-  let worker i = forever $ do
+  let worker _i = forever $ do
         url <- atomically $ readTQueue queue
         crawlPage mgr queue visited url
+        -- print crawled page
+        putStrLn $ "[Crawled] " ++ T.unpack url
         -- Rate limit 방지: 아주 가벼운 delay (필요시 조정)
         threadDelay 50_000  -- 50ms
 
   workers <- spawnWorkers n worker
 
-  -- 30분 후 강제 종료 (또는 Ctrl+C)
-  threadDelay (30 * 60 * 1_000_000)
+  -- 1분 후 강제 종료 (또는 Ctrl+C)
+  threadDelay (1 * 60 * 1_000_000)
   putStrLn "Timeout reached. Shutting down..."
   mapM_ cancel workers
