@@ -30,9 +30,9 @@ library
       CrawlerExample
       HttpClientExample
       LensesExample
+      MonadMaskExample
       MtlExample
       OptparseExample
-      Prelude
       ServantExample
       TemplateExample
       TemplateImporting
@@ -63,6 +63,7 @@ library
     , persistent
     , persistent-sqlite
     , relude
+    , safe-exceptions
     , scalpel-core
     , servant
     , servant-server
@@ -71,6 +72,7 @@ library
     , template-haskell
     , text
     , time
+    , unliftio
     , warp
   default-language: Haskell2010
 
@@ -102,6 +104,7 @@ executable taskflow-api-exe
     , persistent
     , persistent-sqlite
     , relude
+    , safe-exceptions
     , scalpel-core
     , servant
     , servant-server
@@ -111,6 +114,7 @@ executable taskflow-api-exe
     , template-haskell
     , text
     , time
+    , unliftio
     , warp
   default-language: Haskell2010
 
@@ -143,6 +147,7 @@ test-suite taskflow-api-test
     , persistent
     , persistent-sqlite
     , relude
+    , safe-exceptions
     , scalpel-core
     , servant
     , servant-server
@@ -152,5 +157,6 @@ test-suite taskflow-api-test
     , template-haskell
     , text
     , time
+    , unliftio
     , warp
   default-language: Haskell2010

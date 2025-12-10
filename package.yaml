@@ -46,6 +46,9 @@ dependencies:
 - stm
 - network-uri
 - scalpel-core
+- relude
+- safe-exceptions
+- unliftio
 
 ghc-options:
 - -Wall
