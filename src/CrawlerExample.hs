@@ -8,7 +8,7 @@ module CrawlerExample where
 import Control.Concurrent (getNumCapabilities, threadDelay)
 import Control.Concurrent.Async (Async, async, cancel)
 import Control.Concurrent.STM
-import Control.Monad (forM_, forever, void, when)
+import Control.Monad (forM_, forever, when)
 import Control.Exception (try, SomeException)
 import Data.Maybe (fromMaybe)
 import Data.Set (Set)
