@@ -29,7 +29,6 @@ library
       ContainerLib
       CrawlerExample
       HttpClientExample
-      KmeansExample
       LensesExample
       MtlExample
       OptparseExample
@@ -62,7 +61,6 @@ library
     , optparse-applicative
     , persistent
     , persistent-sqlite
-    , primitive
     , scalpel-core
     , servant
     , servant-server
@@ -71,7 +69,6 @@ library
     , template-haskell
     , text
     , time
-    , vector
     , warp
   default-language: Haskell2010
 
@@ -102,7 +99,6 @@ executable taskflow-api-exe
     , optparse-applicative
     , persistent
     , persistent-sqlite
-    , primitive
     , scalpel-core
     , servant
     , servant-server
@@ -112,7 +108,6 @@ executable taskflow-api-exe
     , template-haskell
     , text
     , time
-    , vector
     , warp
   default-language: Haskell2010
 
@@ -144,7 +139,6 @@ test-suite taskflow-api-test
     , optparse-applicative
     , persistent
     , persistent-sqlite
-    , primitive
     , scalpel-core
     , servant
     , servant-server
@@ -154,6 +148,5 @@ test-suite taskflow-api-test
     , template-haskell
     , text
     , time
-    , vector
     , warp
   default-language: Haskell2010
