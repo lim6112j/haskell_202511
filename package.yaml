@@ -46,6 +46,8 @@ dependencies:
 - stm
 - network-uri
 - scalpel-core
+- relude
+- relude-extra
 
 ghc-options:
 - -Wall
