@@ -1,4 +1,3 @@
-
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE NoImplicitPrelude #-}
@@ -13,7 +12,6 @@ import UnliftIO (MonadUnliftIO, openFile, hClose, hGetBuffering, tryAny )
 import Data.Text.IO (hGetContents)
 import System.IO (openTempFile)
 import UnliftIO.Directory (removeFile)
-import Database.Sqlite (Connection)
 
 -- 예시: 파일을 안전하게 읽고 처리하고 무조건 닫기
 safeReadFile :: (MonadIO m, MonadMask m) => FilePath -> (Text -> m a) -> m a
@@ -28,11 +26,18 @@ safeTempFile template action = bracketOnError
     (liftIO $ openTempFile "/tmp" (toString template))
     (\(fp, h) -> liftIO $ do hClose h; void $ tryAny $ removeFile fp)
     (uncurry action)
+
 -- 예시 3: finally 스타일 (가장 자주 쓰임)
+-- Note: This example is commented out because it requires postgresql-simple
+-- To use it, add postgresql-simple to package.yaml dependencies
+{-
+import Database.PostgreSQL.Simple (Connection, connectPostgreSQL, close)
+
 withDBConnection :: (MonadIO m, MonadMask m) => Text -> (Connection -> m a) -> m a
 withDBConnection connStr action =
     bracket
-      (liftIO $ connectPostgreSQL.connectPostgreSQL (encodeUtf8 connStr))
+      (liftIO $ connectPostgreSQL (encodeUtf8 connStr))
       (liftIO . close)
       action
-    `onException` liftIO (putStrLn @Text "DB 연결 중 예외 발생, 정리 완료")
+    `onException` liftIO (putStrLn ("DB 연결 중 예외 발생, 정리 완료" :: Text))
+-}
