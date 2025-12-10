@@ -40,8 +40,8 @@ tailMaybe []      = Nothing
 tailMaybe (_:xs)  = Just xs
 initMaybe []      = Nothing
 initMaybe xs      = Just (take (length xs - 1) xs)
-lastMaybe []      = Nothing
-lastMaybe xs      = Just (Last xs)
+lastMaybe [x]      = Just x
+lastMaybe (_:xs)      = lastMaybe xs
 
 -- Text로 show (� nombre도 안 붙음)
 tshow :: Show a => a -> Text
@@ -53,9 +53,9 @@ catchAny = catch
 
 -- 개발 중에만 동작하는 assert (프로덕션에서는 사라짐)
 #ifndef PRODUCTION
-assert :: Bool -> a -> a -> a
-assert False _ _ = error "assertion failed!"
-assert True  _  x = x
+assert :: Bool -> a -> a
+assert False _ = error "assertion failed!"
+assert True  x = x
 #else
 assert :: Bool -> a -> a
 assert _ x = x
