@@ -46,6 +46,8 @@ dependencies:
 - stm
 - network-uri
 - scalpel-core
+- primitive
+- vector
 
 ghc-options:
 - -Wall
