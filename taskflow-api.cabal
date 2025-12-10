@@ -63,7 +63,6 @@ library
     , persistent
     , persistent-sqlite
     , relude
-    , relude-extra
     , scalpel-core
     , servant
     , servant-server
@@ -103,7 +102,6 @@ executable taskflow-api-exe
     , persistent
     , persistent-sqlite
     , relude
-    , relude-extra
     , scalpel-core
     , servant
     , servant-server
@@ -145,7 +143,6 @@ test-suite taskflow-api-test
     , persistent
     , persistent-sqlite
     , relude
-    , relude-extra
     , scalpel-core
     , servant
     , servant-server
