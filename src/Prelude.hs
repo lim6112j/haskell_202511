@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
-
+{-# LANGUAGE CPP #-}
 module Prelude
   ( module Relude
   -- 안전한 함수들 (head, tail 등은 에러 대신 Maybe)
@@ -30,10 +30,10 @@ import Relude
 
 import Relude.Extra.Newtype   (un)
 import Relude.Extra.Tuple     (dup)
-import Relude.Extra.Enum      (universe)
+import Relude.Enum      (universe)
+import Control.Monad.Catch
 
 -- 안전한 partial 함수들 (실무에서 99.9% 이걸 씀)
-headMaybe, tailMaybe, initMaybe, lastMaybe :: [a] -> Maybe [a]
 headMaybe []      = Nothing
 headMaybe (x:_)   = Just x
 tailMaybe []      = Nothing
@@ -41,7 +41,7 @@ tailMaybe (_:xs)  = Just xs
 initMaybe []      = Nothing
 initMaybe xs      = Just (take (length xs - 1) xs)
 lastMaybe []      = Nothing
-lastMaybe xs      = Just (last xs)
+lastMaybe xs      = Just (Last xs)
 
 -- Text로 show (� nombre도 안 붙음)
 tshow :: Show a => a -> Text
@@ -53,8 +53,8 @@ catchAny = catch
 
 -- 개발 중에만 동작하는 assert (프로덕션에서는 사라짐)
 #ifndef PRODUCTION
-assert :: Bool -> a -> a
-assert False _ = error "assertion failed!"
+assert :: Bool -> a -> a -> a
+assert False _ _ = error "assertion failed!"
 assert True  _  x = x
 #else
 assert :: Bool -> a -> a
