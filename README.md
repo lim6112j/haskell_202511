@@ -1,3 +1,8 @@
+# how to run
+stack runghc src/xxxxx.hs
+or 
+stack run 
+
 # 라이브러리,프로젝트 이름,핵심 배우는 점,GitHub 바로가기,실행 명령어
 1,containers + unordered-containers,containers benchmarks,"IntMap, HashMap, Set 성능 벤치마크 (10GB 데이터 처리 예제)",https://github.com/haskell/containers/tree/master/benchmarks,stack build && stack exec containers-bench
 2,text + bytestring,bytestring performance tests,Text vs String vs ByteString 변환/파싱 성능 (70배 차이 실증),https://github.com/haskell/bytestring/tree/master/tests/performance,cabal build && ./dist/build/test/test

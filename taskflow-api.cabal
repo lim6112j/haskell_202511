@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       AesonExample
+      AesonLawsExample
       ContainerLib
       CrawlerExample
       HttpClientExample
@@ -44,13 +45,16 @@ library
       src/persistent
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
-      aeson
+      QuickCheck
+    , aeson
     , async
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
     , esqueleto
     , exceptions
+    , hedgehog
+    , hedgehog-classes
     , http-client
     , http-client-tls
     , http-types
@@ -83,13 +87,16 @@ executable taskflow-api-exe
       app
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      aeson
+      QuickCheck
+    , aeson
     , async
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
     , esqueleto
     , exceptions
+    , hedgehog
+    , hedgehog-classes
     , http-client
     , http-client-tls
     , http-types
@@ -124,13 +131,16 @@ test-suite taskflow-api-test
       test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      aeson
+      QuickCheck
+    , aeson
     , async
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
     , esqueleto
     , exceptions
+    , hedgehog
+    , hedgehog-classes
     , http-client
     , http-client-tls
     , http-types

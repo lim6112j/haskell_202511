@@ -47,6 +47,9 @@ dependencies:
 - network-uri
 - scalpel-core
 - relude
+- QuickCheck
+- hedgehog
+- hedgehog-classes
 
 ghc-options:
 - -Wall
