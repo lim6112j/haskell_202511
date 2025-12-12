@@ -32,6 +32,7 @@ library
       HttpClientExample
       LensesExample
       MtlExample
+      OpticsHotReloadExample
       OptparseExample
       ServantExample
       TemplateExample
@@ -53,6 +54,7 @@ library
     , containers ==0.6.*
     , esqueleto
     , exceptions
+    , generic-optics
     , hedgehog
     , hedgehog-classes
     , http-client
@@ -62,9 +64,11 @@ library
     , monad-logger
     , mtl
     , network-uri
+    , optics
     , optparse-applicative
     , persistent
     , persistent-sqlite
+    , rapid
     , relude
     , scalpel-core
     , servant
@@ -95,6 +99,7 @@ executable taskflow-api-exe
     , containers ==0.6.*
     , esqueleto
     , exceptions
+    , generic-optics
     , hedgehog
     , hedgehog-classes
     , http-client
@@ -104,9 +109,11 @@ executable taskflow-api-exe
     , monad-logger
     , mtl
     , network-uri
+    , optics
     , optparse-applicative
     , persistent
     , persistent-sqlite
+    , rapid
     , relude
     , scalpel-core
     , servant
@@ -139,6 +146,7 @@ test-suite taskflow-api-test
     , containers ==0.6.*
     , esqueleto
     , exceptions
+    , generic-optics
     , hedgehog
     , hedgehog-classes
     , http-client
@@ -148,9 +156,11 @@ test-suite taskflow-api-test
     , monad-logger
     , mtl
     , network-uri
+    , optics
     , optparse-applicative
     , persistent
     , persistent-sqlite
+    , rapid
     , relude
     , scalpel-core
     , servant

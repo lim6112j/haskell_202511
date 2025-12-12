@@ -50,6 +50,9 @@ dependencies:
 - QuickCheck
 - hedgehog
 - hedgehog-classes
+- optics
+- generic-optics
+- rapid
 
 ghc-options:
 - -Wall

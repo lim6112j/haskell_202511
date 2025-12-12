@@ -11,6 +11,13 @@ packages:
       size: 426
   original:
     hackage: stamina-0.1.0.3@sha256:7a41ce24449fdabb1ca8ef88fb46b5a6bb1c90a0da9017e92790f1397034217e,1349
+- completed:
+    hackage: rapid-0.1.5.3@sha256:97a30c1a8992f8ce70d59279fed9a1bb66771815ee2c6d2063c5f4f4f674efb2,1689
+    pantry-tree:
+      sha256: 6f070dcf654112983badb5ff091fca7655baf1d76d787d5c8c737b4196c86200
+      size: 299
+  original:
+    hackage: rapid-0.1.5.3@sha256:97a30c1a8992f8ce70d59279fed9a1bb66771815ee2c6d2063c5f4f4f674efb2,1689
 snapshots:
 - completed:
     sha256: 238fa745b64f91184f9aa518fe04bdde6552533d169b0da5256670df83a0f1a9

@@ -42,6 +42,7 @@ packages:
 #
 extra-deps:
 - stamina-0.1.0.3@sha256:7a41ce24449fdabb1ca8ef88fb46b5a6bb1c90a0da9017e92790f1397034217e,1349
+- rapid-0.1.5.3@sha256:97a30c1a8992f8ce70d59279fed9a1bb66771815ee2c6d2063c5f4f4f674efb2,1689
 
 # Override default flag values for project packages and extra-deps
 # flags: {}
